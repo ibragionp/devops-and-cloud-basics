@@ -85,11 +85,7 @@ main: Itera na lista de nomes dos atores/atrizes e chama a função de buscar tw
 - Ter python 3 instalado na máquina
 - Importar as bibliotecas os, tweepy, pandas, time e sqlalchemy através dos seguintes comandos:
 
-        pip3 install os
-        pip3 install tweepy
-        pip3 install pandas
-        pip3 install time
-        pip3 install sqlalchemy
+        pip3 install os tweepy pandas time sqlalchemy
 
 - Necessário clonar todo o repositório, pois nele contém arquivos de autenticação ao Banco de Dados e a API do Twitter.
 
