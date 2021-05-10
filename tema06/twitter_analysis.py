@@ -18,6 +18,7 @@ auth_path = '/authentications'
 output_path = '/output'
 
 name_col = 'Name'
+actor_actress_col = 'Actor/actress name'
 
 date_since = '2010-01-01'
 quantity = 10
@@ -71,6 +72,8 @@ def search_tweets_by_name(name, api):
                                                     'Name',
                                                     'Language',
                                                     'Created at'])
+    df_tweets[actor_actress_col] = name
+    
     print(f'Tweets were searched.')
     return df_tweets
     
@@ -82,7 +85,6 @@ def main():
     appended_df = []
     
     for index, row in df_primary_name.iterrows():
-        print(row[name_col])
         df = search_tweets_by_name(row[name_col], api)
         appended_df.append(df)
     
