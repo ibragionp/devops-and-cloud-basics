@@ -17,7 +17,7 @@ top_actors_tweets_file = '/top_actors_tweets_file.csv'
 auth_path = '/authentications'
 output_path = '/output'
 
-primary_name_col = 'primaryName'
+name_col = 'Name'
 
 date_since = '2010-01-01'
 quantity = 10
@@ -44,17 +44,16 @@ def api_connection():
 
 def import_csv():
     print(f'Import csv file {top_actors_file} to DataFrame...')
-    df = pd.read_csv(path + top_actors_file,
+    df = pd.read_csv(path + output_path + top_actors_file,
                      sep = ';',
                      header = 0,
-                     usecols = [primary_name_col])
+                     usecols = [name_col])
     print(f'The csv file {top_actors_file} was imported.')
     return df
     
 
-def search_tweets_by_name(name):
+def search_tweets_by_name(name, api):
     print(f'Searching tweets information name: {name}...')
-    api = api_connection()
     tweets = tw.Cursor(api.search,
                        q = name,
                        since = date_since).items(quantity)
@@ -77,13 +76,14 @@ def search_tweets_by_name(name):
     
 def main():
     
+    api = api_connection()
     df_primary_name = import_csv()
     
     appended_df = []
     
     for index, row in df_primary_name.iterrows():
-        print(row[primary_name_col])
-        df = search_tweets_by_name(row[primary_name_col])
+        print(row[name_col])
+        df = search_tweets_by_name(row[name_col], api)
         appended_df.append(df)
     
     appended_df = pd.concat(appended_df)

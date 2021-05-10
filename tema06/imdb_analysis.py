@@ -34,7 +34,10 @@ title_type_col = 'titleType'
 category_col = 'category'
 name_const_col = 'nconst'
 primary_name_col = 'primaryName'
-appearances_col = 'appearances'
+
+id_col = 'ID'
+performed_col = 'Performed'
+name_col = 'Name'
 
 actor_quantity = 10
 range_year = 10
@@ -65,8 +68,8 @@ def filter_df_title_principals(df):
     df = df[(df[category_col].str.upper().str.find('ACTOR') != -1) | 
             (df[category_col].str.upper().str.find('ACTRESS') != -1)]
     df = df.groupby([name_const_col, 
-                     category_col]).size().reset_index(name = appearances_col)
-    df.sort_values(by = appearances_col, 
+                     category_col]).size().reset_index(name = performed_col)
+    df.sort_values(by = performed_col, 
                     ascending = False, 
                     inplace = True)
     print(f'{title_principals_tb} Dataframe was filtered.')
@@ -102,6 +105,10 @@ def main():
     df = pd.merge(df_title_principals,
                   df_name, 
                   on = name_const_col)
+    
+    df.rename(columns={name_const_col: id_col, 
+                       category_col: category_col.capitalize(),
+                       primary_name_col: name_col}, inplace = True)
     
     df.to_csv(path + output_path + top_actors_file, 
               sep = ';',
