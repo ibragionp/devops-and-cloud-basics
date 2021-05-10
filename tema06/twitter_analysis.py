@@ -12,8 +12,10 @@ import pandas as pd
 import time
 
 api_auth_file = '/api_authentication.txt'
-top_actors_file = '/top_ten_actors_file.csv' 
-top_actors_tweets_file = '/top_ten_actors_tweets_file.csv'
+top_actors_file = '/top_actors_file.csv' 
+top_actors_tweets_file = '/top_actors_tweets_file.csv'
+auth_path = '/authentications'
+output_path = '/output'
 
 primary_name_col = 'primaryName'
 
@@ -24,7 +26,7 @@ path = os.getcwd()
 
 def api_connection():
     print(f'Connecting to Twitter API...')
-    file = open (path + api_auth_file, 'r')
+    file = open (path + auth_path + api_auth_file, 'r')
     lines = file.readlines()
     consumer_key = lines[0].strip()
     consumer_secret = lines[1].strip()
@@ -86,11 +88,11 @@ def main():
     
     appended_df = pd.concat(appended_df)
     
-    appended_df.to_csv(path + top_actors_tweets_file, 
+    appended_df.to_csv(path + output_path + top_actors_tweets_file, 
                        sep = ';',
                        index = False, 
                        header = True)
 
 start_time = time.time()
 main()
-print('Execution time in seconds: ' + time.time() - start_time)
+print('Execution time in seconds: ' + str(time.time() - start_time))

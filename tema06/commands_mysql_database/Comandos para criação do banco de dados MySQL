@@ -1,0 +1,35 @@
+SET GLOBAL local_infile=1;
+
+CREATE TABLE title_basics(
+    tconst VARCHAR(100),
+    titleType VARCHAR(100),
+    primaryTitle VARCHAR(100),
+    originalTitle VARCHAR(100),
+    isAdult INTEGER,
+    startYear VARCHAR(100),
+    endYear VARCHAR(100),
+    runtimeMinutes VARCHAR(100),
+    genres VARCHAR(255),
+    CONSTRAINT PK_Title_Basics PRIMARY KEY (tconst)
+);
+
+CREATE TABLE name_basics(
+    nconst VARCHAR(100),
+    primaryName VARCHAR(100),
+    birthYear VARCHAR(100),
+    deathYear VARCHAR(100),
+    primaryProfession VARCHAR(255),
+    knownForTitles VARCHAR(255),
+    CONSTRAINT PK_Name_Basics PRIMARY KEY (nconst)
+);
+
+CREATE TABLE title_principals(
+    tconst VARCHAR(100),
+    ordering INTEGER,
+    nconst VARCHAR(100),
+    category VARCHAR(100),
+    job VARCHAR(100),
+    characters VARCHAR(100),
+    CONSTRAINT PK_Title_Principals PRIMARY KEY (tconst,ordering)
+);
+

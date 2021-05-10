@@ -15,11 +15,14 @@ import pandas as pd
 import os
 
 import time
+import datetime
 
 hostname = '54.94.212.147'
 database = 'imdb'
 database_auth_file = '/database_authentication.txt'
-top_actors_file = '/top_ten_actors_file.csv' 
+auth_path = '/authentications'
+top_actors_file = '/top_actors_file.csv' 
+output_path = '/output'
 
 name_basics_tb = 'name_basics'
 title_basics_tb = 'title_basics'
@@ -33,11 +36,14 @@ name_const_col = 'nconst'
 primary_name_col = 'primaryName'
 appearances_col = 'appearances'
 
+actor_quantity = 10
+range_year = 10
+
 path = os.getcwd()
 
 def database_connection():
     print(f'Connecting to {database} database...')
-    file = open (path + database_auth_file, 'r')
+    file = open (path + auth_path + database_auth_file, 'r')
     lines = file.readlines()
     user = lines[0].strip()
     password = lines[1].strip()
@@ -47,27 +53,15 @@ def database_connection():
     return create_engine(db_connection_str)
 
 
-def filter_df_na(df, col):
-    print('Filtering NaN and empty values...')
-    df.fillna('', inplace = True)
-    df = df[(df[col].str.upper().str.strip() != 'N') & 
-            (df[col].str.strip() != '')]
-    print('The Dataframe was filtered.')
-    return df
-
-
 def filter_df_title(df):
-    print(f'Filtering {title_basics_tb} Dataframe...')
-    df[start_year_col] = df[start_year_col].astype(int, errors = 'ignore'), 
-    df = df[(df[start_year_col] >= 2010) & 
-            (df[title_type_col].str.strip().str.upper() == 'MOVIE')]
+    print(f'Filtering {title_basics_tb} Dataframe...') 
+    df = df[df[title_type_col].str.strip().str.upper() == 'MOVIE']
     print(f'{title_basics_tb} Dataframe was filtered.')
     return df
 
 
-def filter_df_title_principals(df, title_lst):
+def filter_df_title_principals(df):
     print(f'Filtering {title_principals_tb} Dataframe...')
-    df = df[df[title_const_col].str.strip().str.upper().isin(title_lst)]
     df = df[(df[category_col].str.upper().str.find('ACTOR') != -1) | 
             (df[category_col].str.upper().str.find('ACTRESS') != -1)]
     df = df.groupby([name_const_col, 
@@ -76,37 +70,44 @@ def filter_df_title_principals(df, title_lst):
                     ascending = False, 
                     inplace = True)
     print(f'{title_principals_tb} Dataframe was filtered.')
-    return df.head(10)
+    return df.head(actor_quantity)
         
+
+def create_lst_str(df, col):
+    col_lst = df[col].to_list()
+    col_lst_str = ", ".join([f"'{item}'" for item in col_lst])
+    return col_lst_str
+
 
 def main():
     
     db_connection = database_connection()
     
-    df_title = pd.read_sql(f'SELECT {title_const_col}, {start_year_col}, {title_type_col} FROM {title_basics_tb} ORDER BY {title_const_col} DESC LIMIT 1000', 
+    year_lst = [datetime.datetime.today().year - i for i in range(range_year)]
+    year_lst_str = ", ".join([f"'{year}'" for year in year_lst])
+    df_title = pd.read_sql(f'SELECT {title_const_col}, {start_year_col}, {title_type_col} FROM {title_basics_tb} WHERE {start_year_col} IN ({year_lst_str})', 
                            con = db_connection)
+    df_title = filter_df_title(df_title)
     
-    df_principals = pd.read_sql(f'SELECT {title_const_col}, {name_const_col}, {category_col} FROM {title_principals_tb} ORDER BY {title_const_col} DESC LIMIT 1000', 
+    title_lst_str = create_lst_str(df_title, title_const_col)
+    df_principals = pd.read_sql(f'SELECT {title_const_col}, {name_const_col}, {category_col} FROM {title_principals_tb} WHERE {title_const_col} IN ({title_lst_str})', 
                                 con = db_connection)
 
-    df_name = pd.read_sql(f'SELECT {name_const_col}, {primary_name_col} FROM {name_basics_tb}', 
+    df_title_principals = filter_df_title_principals(df_principals)
+    
+    name_lst_str = create_lst_str(df_title_principals, name_const_col)
+    df_name = pd.read_sql(f'SELECT {name_const_col}, {primary_name_col} FROM {name_basics_tb} WHERE {name_const_col} IN ({name_lst_str})', 
                           con = db_connection)
-
-    df_title = filter_df_na(df_title, 
-                            start_year_col)
     
-    title_lst = df_title[title_const_col].str.upper().to_list()
-    
-    df_title_principals = filter_df_title_principals(df_principals, 
-                                                     title_lst)
     df = pd.merge(df_title_principals,
                   df_name, 
                   on = name_const_col)
-    df.to_csv(path + top_actors_file, 
+    
+    df.to_csv(path + output_path + top_actors_file, 
               sep = ';',
               index = False, 
               header = True)
 
 start_time = time.time()
 main()
-print('Execution time in seconds: ' + time.time() - start_time)
+print('Execution time in seconds: ' + str(time.time() - start_time))
