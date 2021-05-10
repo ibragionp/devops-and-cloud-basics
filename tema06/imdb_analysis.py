@@ -19,7 +19,7 @@ import time
 hostname = '54.94.212.147'
 database = 'imdb'
 database_auth_file = '/database_authentication.txt'
-top_actors_file = 'top_ten_actors_file.csv' 
+top_actors_file = '/top_ten_actors_file.csv' 
 
 name_basics_tb = 'name_basics'
 title_basics_tb = 'title_basics'
@@ -30,6 +30,7 @@ title_const_col = 'tconst'
 title_type_col = 'titleType'
 category_col = 'category'
 name_const_col = 'nconst'
+primary_name_col = 'primaryName'
 appearances_col = 'appearances'
 
 path = os.getcwd()
@@ -88,7 +89,7 @@ def main():
     df_principals = pd.read_sql(f'SELECT {title_const_col}, {name_const_col}, {category_col} FROM {title_principals_tb} ORDER BY {title_const_col} DESC LIMIT 1000', 
                                 con = db_connection)
 
-    df_name = pd.read_sql(f'SELECT nconst, primaryName FROM {name_basics_tb}', 
+    df_name = pd.read_sql(f'SELECT {name_const_col}, {primary_name_col} FROM {name_basics_tb}', 
                           con = db_connection)
 
     df_title = filter_df_na(df_title, 
@@ -102,8 +103,9 @@ def main():
                   df_name, 
                   on = name_const_col)
     df.to_csv(path + top_actors_file, 
-               index = False, 
-               header = True)
+              sep = ';',
+              index = False, 
+              header = True)
 
 start_time = time.time()
 main()
