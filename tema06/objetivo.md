@@ -96,9 +96,11 @@ main: Itera na lista de nomes dos atores/atrizes e chama a função de buscar tw
 ### Output:
 Estrutura do csv de saída para 10 atores que fizeram mais filmes nos últimos 10 anos:
 
+![](/tema06/output/imdb_analysis_example.png)
 
 Estrutura do csv de saída para tweets referentes aos 10 atores que fizeram mais filmes nos últimos 10 anos:
-[image]
+
+![](/tema06/output/twitter_analysis_example.png)
 
 
 
