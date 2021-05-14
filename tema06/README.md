@@ -68,6 +68,8 @@ filter_df_title_principals: Realiza o filtro do DataFrame apenas pela categoria 
 
 create_lst_str: Realiza a criação de uma string em forma de lista para que seja usada no 'WHERE IN' do MySQL para filtrar os dados que serão importados do banco e melhorar a performance.
 
+import_data_from_database: Realiza a importação dos dados do banco, porém com a utilização de chunk_size para pegar porções da consulta do sql, filtrá-las usando funções anteriores e assim não dar Out of Memory no sistema.
+
 main: Chama todas as funções anteriores, filtrando os DataFrames e no final faz um merge de todos os DataFrames através do identificador do ator/atriz. Assim traz a informação dos nomes e quantidades de filmes realizados, exportando-os para um arquivo .csv
 
 #### twitter_analysis funções:

@@ -7,15 +7,12 @@ Created on Mon May  3 08:31:15 2021
 
 @author: ilegra
 """
-
-from sqlalchemy import create_engine
-
 import pandas as pd
-
 import os
-
 import time
 import datetime
+import mysql.connector as sql
+import pandas.io.sql as psql
 
 hostname = '54.94.212.147'
 database = 'imdb'
@@ -34,15 +31,17 @@ title_type_col = 'titleType'
 category_col = 'category'
 name_const_col = 'nconst'
 primary_name_col = 'primaryName'
+primary_profession_col = 'primaryProfession'
 
 id_col = 'ID'
 performed_col = 'Performed'
 name_col = 'Name'
+profession_col = 'Professions'
 
 actor_quantity = 10
 range_year = 10
 
-path = os.getcwd()
+path = os.path.dirname(os.path.realpath(__file__))
 
 def database_connection():
     print(f'Connecting to {database} database...')
@@ -51,12 +50,15 @@ def database_connection():
     user = lines[0].strip()
     password = lines[1].strip()
     file.close()
-    db_connection_str = f'mysql+pymysql://{user}:{password}@{hostname}/{database}'
+    db_connection = sql.connect(host = hostname, 
+                                database = database, 
+                                user = user,
+                                password = password)
     print(f'{database} database was connected.')
-    return create_engine(db_connection_str)
+    return db_connection
 
 
-def filter_df_title(df):
+def filter_df_title(df, tb):
     print(f'Filtering {title_basics_tb} Dataframe...') 
     df = df[df[title_type_col].str.strip().str.upper() == 'MOVIE']
     print(f'{title_basics_tb} Dataframe was filtered.')
@@ -65,8 +67,6 @@ def filter_df_title(df):
 
 def filter_df_title_principals(df):
     print(f'Filtering {title_principals_tb} Dataframe...')
-    df = df[(df[category_col].str.upper().str.find('ACTOR') != -1) | 
-            (df[category_col].str.upper().str.find('ACTRESS') != -1)]
     df = df.groupby([name_const_col, 
                      category_col]).size().reset_index(name = performed_col)
     df.sort_values(by = performed_col, 
@@ -74,33 +74,86 @@ def filter_df_title_principals(df):
                     inplace = True)
     print(f'{title_principals_tb} Dataframe was filtered.')
     return df.head(actor_quantity)
+
+
+def filter_df_by_profession(df, tb):
+    print(f'Filtering Dataframe by profession...')
+    col = category_col
+    if tb == name_basics_tb:
+        col = primary_profession_col
+    df = df[(df[col].str.upper().str.find('ACTOR') != -1) | 
+            (df[col].str.upper().str.find('ACTRESS') != -1)]
+    print(f'Dataframe was filtered.')
+    return df
         
 
-def create_lst_str(df, col):
-    col_lst = df[col].to_list()
-    col_lst_str = ", ".join([f"'{item}'" for item in col_lst])
+def create_lst_str(col_lst):
+    col_lst_str = ", ".join([f"'{col}'" for col in col_lst])
     return col_lst_str
 
 
-def main():
-    
+def import_data_from_database(tb, cols_select, col_where, values_where_in, col_pk, func):
+    chunk_size = 10000
+    offset = 0
     db_connection = database_connection()
-    
-    year_lst = [datetime.datetime.today().year - i for i in range(range_year)]
-    year_lst_str = ", ".join([f"'{year}'" for year in year_lst])
-    df_title = pd.read_sql(f'SELECT {title_const_col}, {start_year_col}, {title_type_col} FROM {title_basics_tb} WHERE {start_year_col} IN ({year_lst_str})', 
-                           con = db_connection)
-    df_title = filter_df_title(df_title)
-    
-    title_lst_str = create_lst_str(df_title, title_const_col)
-    df_principals = pd.read_sql(f'SELECT {title_const_col}, {name_const_col}, {category_col} FROM {title_principals_tb} WHERE {title_const_col} IN ({title_lst_str})', 
-                                con = db_connection)
+    dfs = []
+    while True:
+      sql = "SELECT %s FROM %s WHERE %s IN (%s) ORDER BY %s LIMIT %d OFFSET %d" % (cols_select,
+                                                                                 tb,
+                                                                                 col_where,
+                                                                                 values_where_in,
+                                                                                 col_pk,
+                                                                                 chunk_size,
+                                                                                 offset)
+      df_result = psql.read_sql(sql, db_connection)
+      if not df_result.empty:
+          dfs.append(func(df_result, tb))
+          offset += chunk_size
+      else:
+        break
+    full_df = pd.concat(dfs)
+    db_connection.close()
+    return full_df
 
-    df_title_principals = filter_df_title_principals(df_principals)
+
+def main():    
     
-    name_lst_str = create_lst_str(df_title_principals, name_const_col)
-    df_name = pd.read_sql(f'SELECT {name_const_col}, {primary_name_col} FROM {name_basics_tb} WHERE {name_const_col} IN ({name_lst_str})', 
-                          con = db_connection)
+    cols_select_title_basics = ', '.join([title_const_col, 
+                                        start_year_col, 
+                                        title_type_col])
+    year_lst = [datetime.datetime.today().year - i for i in range(range_year)]
+    values_where_in_title_basics = create_lst_str(year_lst)
+    df_title = import_data_from_database(title_basics_tb, 
+                                         cols_select_title_basics,
+                                         start_year_col, 
+                                         values_where_in_title_basics,
+                                         title_const_col,
+                                         filter_df_title)
+
+
+    cols_select_title_principals = ', '.join([title_const_col, 
+                                              name_const_col, 
+                                              category_col])    
+    values_where_in_title_principals = create_lst_str(df_title[title_const_col].to_list())
+    df_title_principals = import_data_from_database(title_principals_tb, 
+                                              cols_select_title_principals,
+                                              title_const_col,
+                                              values_where_in_title_principals,
+                                              title_const_col,
+                                              filter_df_by_profession)
+    df_title_principals = filter_df_title_principals(df_title_principals)
+    
+    
+    cols_select_name = ', '.join([name_const_col,
+                                  primary_name_col,
+                                  primary_profession_col])
+    values_where_in_name = create_lst_str(df_title_principals[name_const_col].to_list())
+    df_name = import_data_from_database(name_basics_tb, 
+                                        cols_select_name,
+                                        name_const_col,
+                                        values_where_in_name,
+                                        name_const_col,
+                                        filter_df_by_profession)   
     
     df = pd.merge(df_title_principals,
                   df_name, 
@@ -108,7 +161,8 @@ def main():
     
     df.rename(columns={name_const_col: id_col, 
                        category_col: category_col.capitalize(),
-                       primary_name_col: name_col}, inplace = True)
+                       primary_name_col: name_col,
+                       primary_profession_col: profession_col}, inplace = True)
     
     df.to_csv(path + output_path + top_actors_file, 
               sep = ';',
