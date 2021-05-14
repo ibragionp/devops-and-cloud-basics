@@ -23,7 +23,7 @@ actor_actress_col = 'Actor/actress name'
 date_since = '2010-01-01'
 quantity = 10
 
-path = os.getcwd()
+path = os.path.dirname(os.path.realpath(__file__))
 
 def api_connection():
     print(f'Connecting to Twitter API...')
