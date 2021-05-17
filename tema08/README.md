@@ -13,23 +13,29 @@ Antes de tudo, foi necessário realizar os seguintes passos:
 - Instalação do AWS CLI para poder executar comandos aws na VM:
 	https://docs.aws.amazon.com/pt_br/cli/latest/userguide/install-windows.html
 - Configuração no Powershell para que fosse possível com as Key Access da AWS:
-		aws configure 
+	```
+	aws configure 
+	```
 
 ### Scripts Poweshell:
 Para realizar o objetivo foi utilizado o Agendador de Tarefas do Windows. E foram utilizados 2 scripts, pois um seria executado anualmente e outro diariamente:
 
 - Script powershell para executar o arquivo python que faz a análise dos arquivos IMDB que estão no banco de dados MySQL na EC2 AWS.
-	- Editor de texto -> Salvar como... -> .ps1
-
-		python C:\Users\isabe\OneDrive\Documentos\devops-and-cloud-basics\tema06\imdb_analysis.py
+	
+	Editor de texto -> Salvar como... -> .ps1
+	
+	```
+	python C:\Users\isabe\OneDrive\Documentos\devops-and-cloud-basics\tema06\imdb_analysis.py
+	```
 
 - Script powershell para executar o arquivo python que faz a análise dos tweets na API do Twitter e sincronizar o arquivo gerado para o Bucket S3 da AWS.
-	- Editor de texto -> Salvar como... -> .ps1
+	
+	Editor de texto -> Salvar como... -> .ps1
+	```
+	python C:\Users\isabe\OneDrive\Documentos\devops-and-cloud-basics\tema06\twitter_analysis.py
 
-		python C:\Users\isabe\OneDrive\Documentos\devops-and-cloud-basics\tema06\twitter_analysis.py
-
-		aws s3 --region us-east-2 sync C:\Users\isabe\OneDrive\Documentos\devops-and-cloud-basics\tema06\output s3://jt-dataeng-isabellabragionpereira/tema08/output/
-		
+	aws s3 --region us-east-2 sync C:\Users\isabe\OneDrive\Documentos\devops-and-cloud-basics\tema06\output s3://jt-dataeng-isabellabragionpereira/tema08/output/
+	```		
 
 ### Agendador de tarefas Windows:
 Para agendar uma tarefa no Windows são os seguintes passos:
@@ -44,7 +50,7 @@ Para agendar uma tarefa no Windows são os seguintes passos:
 
 - Em "Programa/Script" deve-se colocar o caminho do executável do Powershell
 
-- Em "Adicione argumentos" colocar o caminho do script powershell que deseja que ser executado
+	- Em "Adicione argumentos" colocar o caminho do script powershell que deseja que ser executado
 
 - "Concluir"
 
