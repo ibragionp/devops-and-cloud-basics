@@ -14,7 +14,7 @@ import datetime
 import mysql.connector as sql
 import pandas.io.sql as psql
 
-hostname = '54.94.212.147'
+hostname = '54.232.47.179'
 database = 'imdb'
 database_auth_file = '/database_authentication.txt'
 auth_path = '/authentications'
