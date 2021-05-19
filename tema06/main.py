@@ -11,7 +11,7 @@ packages = ['pandas', 'tweepy', 'os', 'time', 'datetime',
             'mysql-connector-python', 'pandas-io']
 
 def run_command_install(package):
-    cmd = 'pip install ' + package
+    cmd = 'pip3 install ' + package
     push = subprocess.Popen(cmd, shell=True, stdout = subprocess.PIPE)
     push.wait()   # the new line
     print(push.returncode)
