@@ -5,8 +5,20 @@ Created on Wed May 19 17:10:33 2021
 
 @author: ilegra
 """
-
 import subprocess
+
+packages = ['pandas', 'tweepy', 'os', 'time', 'datetime', 
+            'mysql-connector-python', 'pandas-io']
+
+def run_command_install(package):
+    cmd = 'pip install ' + package
+    push = subprocess.Popen(cmd, shell=True, stdout = subprocess.PIPE)
+    push.wait()   # the new line
+    print(push.returncode)
+
+for package in packages:
+    run_command_install(package)
+
 import os
 
 path = os.path.dirname(os.path.realpath(__file__))
