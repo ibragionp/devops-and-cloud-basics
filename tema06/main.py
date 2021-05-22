@@ -17,6 +17,7 @@ package_lst = ['datetime', 'mysql-connector-python', 'os', 'pandas',
 def install_packages(package_lst):
     for package in package_lst:
         subprocess.check_call([sys.executable, 
+                               "sudo"
                                "-m", 
                                "pip", 
                                "install", 
