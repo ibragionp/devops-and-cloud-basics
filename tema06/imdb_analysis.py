@@ -7,12 +7,13 @@ Created on Mon May  3 08:31:15 2021
 
 @author: ilegra
 """
-import pandas as pd
-import os
-import time
-import datetime
+from pandas import concat, merge
+from os import path
+from time import time
+from datetime import datetime
+from pandas.io.sql import read_sql
 import mysql.connector as sql
-import pandas.io.sql as psql
+
 
 hostname = '54.232.47.179'
 database = 'imdb'
@@ -41,7 +42,7 @@ profession_col = 'Professions'
 actor_quantity = 10
 range_year = 10
 
-path = os.path.dirname(os.path.realpath(__file__))
+path = path.dirname(path.realpath(__file__))
 
 def database_connection():
     print(f'Connecting to {database} database...')
@@ -105,13 +106,13 @@ def import_data_from_database(tb, cols_select, col_where, values_where_in, col_p
                                                                                  col_pk,
                                                                                  chunk_size,
                                                                                  offset)
-      df_result = psql.read_sql(sql, db_connection)
+      df_result = read_sql(sql, db_connection)
       if not df_result.empty:
           dfs.append(func(df_result, tb))
           offset += chunk_size
       else:
         break
-    full_df = pd.concat(dfs)
+    full_df = concat(dfs)
     db_connection.close()
     return full_df
 
@@ -121,7 +122,7 @@ def main():
     cols_select_title_basics = ', '.join([title_const_col, 
                                         start_year_col, 
                                         title_type_col])
-    year_lst = [datetime.datetime.today().year - i for i in range(range_year)]
+    year_lst = [datetime.today().year - i for i in range(range_year)]
     values_where_in_title_basics = create_lst_str(year_lst)
     df_title = import_data_from_database(title_basics_tb, 
                                          cols_select_title_basics,
@@ -155,7 +156,7 @@ def main():
                                         name_const_col,
                                         filter_df_by_profession)   
     
-    df = pd.merge(df_title_principals,
+    df = merge(df_title_principals,
                   df_name, 
                   on = name_const_col)
     
@@ -169,6 +170,6 @@ def main():
               index = False, 
               header = True)
 
-start_time = time.time()
+start_time = time()
 main()
-print('Execution time in seconds: ' + str(time.time() - start_time))
+print('Execution time in seconds: ' + str(time() - start_time))
