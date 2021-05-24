@@ -42,11 +42,11 @@ profession_col = 'Professions'
 actor_quantity = 10
 range_year = 10
 
-path = path.dirname(path.realpath(__file__))
+files_path = path.dirname(path.realpath(__file__))
 
 def database_connection():
     print(f'Connecting to {database} database...')
-    file = open (path + auth_path + database_auth_file, 'r')
+    file = open (files_path + auth_path + database_auth_file, 'r')
     lines = file.readlines()
     user = lines[0].strip()
     password = lines[1].strip()
@@ -165,7 +165,7 @@ def main():
                        primary_name_col: name_col,
                        primary_profession_col: profession_col}, inplace = True)
     
-    df.to_csv(path + output_path + top_actors_file, 
+    df.to_csv(files_path + output_path + top_actors_file, 
               sep = ';',
               index = False, 
               header = True)

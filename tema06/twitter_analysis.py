@@ -7,8 +7,8 @@ Created on Fri May  7 17:05:37 2021
 """
 
 import os
-import tweepy as tw
-import pandas as pd
+from tweepy import OAuthHandler, API, Cursor
+from pandas import read_csv, DataFrame, concat
 import time
 
 api_auth_file = '/api_authentication.txt'
@@ -34,18 +34,18 @@ def api_connection():
     access_token = lines[2].strip()
     access_token_secret = lines[3].strip()
     file.close()
-    auth = tw.OAuthHandler(consumer_key,
+    auth = OAuthHandler(consumer_key,
                            consumer_secret)
     auth.set_access_token(access_token, 
                           access_token_secret)
-    api = tw.API(auth, 
+    api = API(auth, 
                  wait_on_rate_limit = True)
     print(f'API was connected.')
     return api
 
 def import_csv():
     print(f'Import csv file {top_actors_file} to DataFrame...')
-    df = pd.read_csv(path + output_path + top_actors_file,
+    df = read_csv(path + output_path + top_actors_file,
                      sep = ';',
                      header = 0,
                      usecols = [name_col])
@@ -55,7 +55,7 @@ def import_csv():
 
 def search_tweets_by_name(name, api):
     print(f'Searching tweets information name: {name}...')
-    tweets = tw.Cursor(api.search,
+    tweets = Cursor(api.search,
                        q = name,
                        since = date_since).items(quantity)
     
@@ -66,7 +66,7 @@ def search_tweets_by_name(name, api):
                    tweet.lang,
                    tweet.created_at] for tweet in tweets]
 
-    df_tweets = pd.DataFrame(tweets_lst, columns = ['ID', 
+    df_tweets = DataFrame(tweets_lst, columns = ['ID', 
                                                     'Text',
                                                     'Username',
                                                     'Name',
@@ -88,7 +88,7 @@ def main():
         df = search_tweets_by_name(row[name_col], api)
         appended_df.append(df)
     
-    appended_df = pd.concat(appended_df)
+    appended_df = concat(appended_df)
     
     appended_df.to_csv(path + output_path + top_actors_tweets_file, 
                        sep = ';',
