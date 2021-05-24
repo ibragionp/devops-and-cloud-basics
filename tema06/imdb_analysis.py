@@ -120,8 +120,8 @@ def import_data_from_database(tb, cols_select, col_where, values_where_in, col_p
 def main():    
     
     cols_select_title_basics = ', '.join([title_const_col, 
-                                        start_year_col, 
-                                        title_type_col])
+                                          start_year_col,
+                                          title_type_col])
     year_lst = [datetime.today().year - i for i in range(range_year)]
     values_where_in_title_basics = create_lst_str(year_lst)
     df_title = import_data_from_database(title_basics_tb, 
