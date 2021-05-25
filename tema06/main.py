@@ -6,7 +6,7 @@ Created on Wed May 19 17:10:33 2021
 @author: ilegra
 """
 from subprocess import Popen, PIPE
-import imdb_analysis.py
+#import imdb_analysis.py
 import twitter_analysis.py
 
 sync_aws_str = 'aws s3 sync ~/devops-and-cloud-basics/tema06/output/ s3://jt-dataeng-isabellabragionpereira/tema09/output/'
