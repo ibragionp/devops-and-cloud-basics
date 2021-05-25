@@ -12,7 +12,7 @@ sync_aws_str = 'aws s3 sync ~/devops-and-cloud-basics/tema06/output/ s3://jt-dat
     
 def execute_scripts_analysis():
     #imdb_analysis.py
-    twitter_analysis.py
+    twitter_analysis
     
 def sync_bucket_s3_aws():
     terminal = sync_aws_str
