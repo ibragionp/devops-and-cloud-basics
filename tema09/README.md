@@ -7,7 +7,7 @@ onde puxará do seu github e fará o deploy dentro da sua EC2 Linux.
 
 ---
 
-## CRIAÇÃO DA PIPELINE ATRAVÉS DO JENKINSFILE:
+## Criação da pipeline através do Jenkinsfile:
 
 ### Preparação da máquina (AWS EC2) e configurar o Jenkins:
 Antes de tudo, foi necessário realizar os seguintes passos:
@@ -77,7 +77,7 @@ A pipeline está com o seguinte passo-a-passo:
 
 ---
 
-## CRIAÇÃO DA PIPELINE NO JENKINS:
+## Criação da pipeline no Jenkins:
 
 ### Preparação da máquina (AWS EC2) e configurar o Jenkins:
 Antes de tudo, foi necessário realizar os seguintes passos:
