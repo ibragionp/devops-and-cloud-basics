@@ -42,7 +42,7 @@ pipeline {
 
                 sh 'sudo rm -rf /home/ec2-user/devops-and-cloud-basics/tema09/output/'
 
-                sh 'sudo cp -r /var/lib/jenkins/workspace/python-script-pipeline/tema06/output/ /home/ec2-user/devops-and-cloud-basics/tema09/output/'
+                sh 'sudo cp -r /var/lib/jenkins/workspace/python-script-pipeline-jenkinsfile/tema06/output/ /home/ec2-user/devops-and-cloud-basics/tema09/output/'
 
             }
 
