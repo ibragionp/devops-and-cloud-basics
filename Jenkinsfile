@@ -18,7 +18,7 @@ pipeline {
                 sh 'sudo pip3 install pandas'
                 sh 'sudo pip3 install tweepy'
                 
-                sh 'sudo mkdir -p -m777 /home/ec2-user/devops-and-cloud-basics/tema06/output'
+                sh 'sudo mkdir -p -m777 /home/ec2-user/devops-and-cloud-basics/tema09/output'
             }
         }
 
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 
                sh '''
-                cd /var/lib/jenkins/workspace/python-script-pipeline/tema06/
+                cd /var/lib/jenkins/workspace/python-script-pipeline-jenkinsfile/tema06/
                 python3 main.py
                 '''
 
@@ -40,9 +40,9 @@ pipeline {
 
             steps {
 
-                sh 'sudo rm -rf /home/ec2-user/devops-and-cloud-basics/tema06/output/'
+                sh 'sudo rm -rf /home/ec2-user/devops-and-cloud-basics/tema09/output/'
 
-                sh 'sudo cp -r /var/lib/jenkins/workspace/python-script-pipeline/tema06/output/ /home/ec2-user/devops-and-cloud-basics/tema06/output/'
+                sh 'sudo cp -r /var/lib/jenkins/workspace/python-script-pipeline/tema06/output/ /home/ec2-user/devops-and-cloud-basics/tema09/output/'
 
             }
 
