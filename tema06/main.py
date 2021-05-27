@@ -9,7 +9,7 @@ from subprocess import Popen, PIPE
 #import imdb_analysis
 import twitter_analysis
 
-sync_aws_str = 'aws s3 sync ~/tema06/output/ s3://jt-dataeng-isabellabragionpereira/tema09/output/'
+sync_aws_str = 'aws s3 sync /var/lib/jenkins/tema06/output/ s3://jt-dataeng-isabellabragionpereira/tema09/output/'
     
 def execute_scripts_analysis():
     #imdb_analysis
