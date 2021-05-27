@@ -46,7 +46,10 @@ pipeline {
                 
                 sh 'sudo ls /home/ec2-user/devops-and-cloud-basics/tema09/output/'
                 
-                sh 'aws s3 sync /home/ec2-user/devops-and-cloud-basics/tema09/output/ s3://jt-dataeng-isabellabragionpereira/tema09/output/'
+                sh '''
+                cd /home/ec2-user/
+                aws s3 sync ~/devops-and-cloud-basics/tema09/output/ s3://jt-dataeng-isabellabragionpereira/tema09/output/
+                '''
                
             }
 
