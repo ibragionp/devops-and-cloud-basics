@@ -9,7 +9,8 @@ from subprocess import Popen, PIPE
 #import imdb_analysis
 import twitter_analysis
 
-sync_aws_str = 'aws s3 sync /var/lib/jenkins/tema06/output/ s3://jt-dataeng-isabellabragionpereira/tema09/output/'
+#sync_aws_str = 'aws s3 sync /var/lib/jenkins/workspace/python-script-pipeline-jenkinsfile/tema06/ s3://jt-dataeng-isabellabragionpereira/tema09/output/'
+sync_aws_str = 'sudo -S su - ec2-user -c "aws s3 sync /home/ec2-user/devops-and-cloud-basics/tema09/output/ s3://jt-dataeng-isabellabragionpereira/tema09/output/ "'
     
 def execute_scripts_analysis():
     #imdb_analysis
