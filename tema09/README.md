@@ -75,6 +75,12 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 	``` 
 	1. Inserir no fim do arquivo: jenkins ALL=(ALL) NOPASSWD: ALL
 	2. Salvar alterações
+	
+11. Configurar credenciais da AWS:
+	``` 
+	sudo aws configure
+	``` 
+	Inserir Access Key e Secrect Key da conta na AWS.
 
 
 ### Criação do Webhook no repositório do Github:
