@@ -21,9 +21,9 @@ print(access_key)
 print(secret_key)
 '''
 
-
-from botocore.credentials import InstanceMetadataProvider, InstanceMetadataFetcher
-
+from botocore.utils import InstanceMetadataFetcher
+from botocore.credentials import InstanceMetadataProvider
 provider = InstanceMetadataProvider(iam_role_fetcher=InstanceMetadataFetcher(timeout=1000, num_attempts=2))
-creds = provider.load().get_frozen_credentials()
-print(creds)
+creds = provider.load()
+print(creds.access_key)
+print(creds.secret_key)
