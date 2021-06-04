@@ -20,6 +20,7 @@ secret_key = credentials.secret_key
 print(access_key)
 print(secret_key)
 '''
+'''
 import boto3
 
 session = boto3.Session()
@@ -32,12 +33,11 @@ SECRET_KEY = credentials.secret_key
 
 print(ACCESS_KEY)
 print(SECRET_KEY)
-
 '''
+
 from botocore.utils import InstanceMetadataFetcher
 from botocore.credentials import InstanceMetadataProvider
 provider = InstanceMetadataProvider(iam_role_fetcher=InstanceMetadataFetcher(timeout=1000, num_attempts=2))
 creds = provider.load()
 print(creds.access_key)
 print(creds.secret_key)
-'''
