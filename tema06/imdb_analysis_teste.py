@@ -132,4 +132,5 @@ import boto3
 
 session = boto3.Session()
 credentials = session.get_credentials()
+credentials = credentials.get_frozen_credentials()
 print(credentials)
