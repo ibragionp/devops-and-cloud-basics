@@ -132,3 +132,4 @@ import boto3
 
 session = boto3.Session()
 credentials = session.get_credentials()
+print(credentials)
