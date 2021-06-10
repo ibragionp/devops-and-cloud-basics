@@ -36,9 +36,9 @@ def api_connection():
     consumer_secret = lines[1].strip()
     access_token = lines[2].strip()
     access_token_secret = lines[3].strip()
-    file.close()
+    #file.close()
     auth = OAuthHandler(consumer_key,
-                           consumer_secret)
+                        consumer_secret)
     auth.set_access_token(access_token, 
                           access_token_secret)
     api = API(auth, 
