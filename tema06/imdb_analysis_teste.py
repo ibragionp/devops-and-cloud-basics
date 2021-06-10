@@ -7,7 +7,8 @@ Created on Fri Jun  4 16:02:15 2021
 
 @author: ilegra
 """
-'''
+
+from pandas import read_csv, merge
 from os import path
 from time import time
 from datetime import datetime
@@ -66,15 +67,18 @@ def import_datasets(file, cols):
 
 def filter_df_title(filter_lst):
     print(f'Importing and Filtering {title_basics_file} Dataframe...') 
+    
     df = import_datasets(title_basics_file, cols_title_basics)
     df = df[df[start_year_col].isin(filter_lst)]
     df = df[df[title_type_col].str.strip().str.upper() == 'MOVIE']
+    
     print(f'{title_basics_file} Dataframe was filtered.')
     return df
 
 
 def filter_df_title_principals(filter_lst):
     print(f'Filtering {title_principals_file} Dataframe...')
+    
     df = import_datasets(title_principals_file, cols_title_principals)
     df = df[df[title_const_col].isin(filter_lst)]
     df = df[(df[category_col].str.upper().str.find('ACTOR') != -1) | 
@@ -84,28 +88,28 @@ def filter_df_title_principals(filter_lst):
     df.sort_values(by = performed_col, 
                    ascending = False, 
                    inplace = True)
+    
     print(f'{title_principals_file} Dataframe was filtered.')
     return df.head(actor_quantity)
 
 def filter_df_name(filter_lst):
     print(f'Filtering {name_basics_file} Dataframe...')
+    
     df = import_datasets(name_basics_file, cols_name_basics)
     df = df[df[name_const_col].isin(filter_lst)]
+    
     print(f'{name_basics_file} Dataframe was filtered.')
     return df
 
 
 
 def main():    
-    
-
     year_lst = [str(datetime.today().year - i) for i in range(range_year)]
     df_title = filter_df_title(year_lst)
 
- 
+
     title_lst = df_title[title_const_col].to_list()
     df_title_principals = filter_df_title_principals(title_lst)
-    
     
     name_lst = df_title_principals[name_const_col].to_list()
     df_name = filter_df_name(name_lst)   
@@ -127,10 +131,3 @@ def main():
 start_time = time()
 main()
 print('Execution time in seconds: ' + str(time() - start_time))
-'''
-import boto3
-
-session = boto3.Session()
-credentials = session.get_credentials()
-credentials = credentials.get_frozen_credentials()
-print(credentials)

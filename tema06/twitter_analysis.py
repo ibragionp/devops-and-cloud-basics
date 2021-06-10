@@ -9,8 +9,14 @@ Created on Fri May  7 17:05:37 2021
 import os
 from tweepy import OAuthHandler, API, Cursor
 from pandas import read_csv, DataFrame, concat
+from smart_open import smart_open
 import time
 
+with smart_open('s3://jt-dataeng-isabellabragionpereira/tema09/api_authentication/api_authentication.txt', 'rb') as s3_source:
+    for line in s3_source:
+         print(line.decode('utf8'))
+
+'''
 api_auth_file = '/api_authentication.txt'
 top_actors_file = '/top_actors_file.csv' 
 top_actors_tweets_file = '/top_actors_tweets_file.csv'
@@ -24,6 +30,15 @@ date_since = '2010-01-01'
 quantity = 10
 
 path = os.path.dirname(os.path.realpath(__file__))
+
+with smart_open('s3://jt-dataeng-isabellabragionpereira/tema09/api_authentication/api_authentication.txt', 'rb') as s3_source:
+    for line in s3_source:
+         print(line.decode('utf8'))
+
+    s3_source.seek(0)  # seek to the beginning
+    b1000 = s3_source.read(1000)  # read 1000 bytes
+
+
 
 def api_connection():
     print(f'Connecting to Twitter API...')
@@ -98,3 +113,4 @@ def main():
 start_time = time.time()
 main()
 print('Execution time in seconds: ' + str(time.time() - start_time))
+'''
