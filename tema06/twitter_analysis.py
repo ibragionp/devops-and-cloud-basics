@@ -16,7 +16,7 @@ with smart_open('s3://jt-dataeng-isabellabragionpereira/tema09/api_authenticatio
     for line in s3_source:
          print(line.decode('utf8'))
 
-'''
+
 api_auth_file = '/api_authentication.txt'
 top_actors_file = '/top_actors_file.csv' 
 top_actors_tweets_file = '/top_actors_tweets_file.csv'
@@ -32,6 +32,10 @@ quantity = 10
 path = os.path.dirname(os.path.realpath(__file__))
 
 with smart_open('s3://jt-dataeng-isabellabragionpereira/tema09/api_authentication/api_authentication.txt', 'rb') as s3_source:
+    lines = s3_source.readlines()
+    print(lines)
+    
+'''
     for line in s3_source:
          print(line.decode('utf8'))
 
