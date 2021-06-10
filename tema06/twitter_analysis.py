@@ -12,11 +12,6 @@ from pandas import read_csv, DataFrame, concat
 from smart_open import smart_open
 import time
 
-with smart_open('s3://jt-dataeng-isabellabragionpereira/tema09/api_authentication/api_authentication.txt', 'rb') as s3_source:
-    for line in s3_source:
-         print(line.decode('utf8'))
-
-
 api_auth_file = '/api_authentication.txt'
 top_actors_file = '/top_actors_file.csv' 
 top_actors_tweets_file = '/top_actors_tweets_file.csv'
@@ -31,23 +26,12 @@ quantity = 10
 
 path = os.path.dirname(os.path.realpath(__file__))
 
-with smart_open('s3://jt-dataeng-isabellabragionpereira/tema09/api_authentication/api_authentication.txt', 'rb') as s3_source:
-    lines = s3_source.readlines()
-    print(lines)
-    
-'''
-    for line in s3_source:
-         print(line.decode('utf8'))
-
-    s3_source.seek(0)  # seek to the beginning
-    b1000 = s3_source.read(1000)  # read 1000 bytes
-
-
-
 def api_connection():
     print(f'Connecting to Twitter API...')
-    file = open (path + auth_path + api_auth_file, 'r')
-    lines = file.readlines()
+    with smart_open('s3://jt-dataeng-isabellabragionpereira/tema09/api_authentication/api_authentication.txt', 'rb') as s3_source:
+        lines = s3_source.readlines()
+    #file = open (path + auth_path + api_auth_file, 'r')
+    #lines = file.readlines()
     consumer_key = lines[0].strip()
     consumer_secret = lines[1].strip()
     access_token = lines[2].strip()
@@ -117,4 +101,3 @@ def main():
 start_time = time.time()
 main()
 print('Execution time in seconds: ' + str(time.time() - start_time))
-'''
