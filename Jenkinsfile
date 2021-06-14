@@ -1,12 +1,10 @@
-node {
-  withCredentials( [usernamePassword( credentialsId: 'amazon', 
-                                      usernameVariable: 'USERNAME', 
-                                      passwordVariable: 'PASSWORD')])
-}
-
 pipeline {
 
     agent any
+  
+    environment { 
+        YOUR_CRED = credentials('amazon') 
+    }
 
     stages {
          
