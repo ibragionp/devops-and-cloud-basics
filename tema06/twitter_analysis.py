@@ -31,7 +31,8 @@ def api_connection():
     print(f'Connecting to Twitter API...')
     
     s3 = boto3.resource('s3')
-    content_object = s3.Object(bucket_name=bucket_api_auth, key=key_api_auth)
+    content_object = s3.Object(bucket_name = bucket_api_auth, 
+                               key = key_api_auth)
     file_content = content_object.get()['Body'].read().decode('utf-8')
     lines = file_content.split('\n')
     consumer_key = lines[0].strip()
