@@ -29,6 +29,8 @@ path = os.path.dirname(os.path.realpath(__file__))
 def api_connection():
     print(f'Connecting to Twitter API...')
     
+    os.environ['AWS_PROFILE'] = "ec2-user"
+    
     s3 = boto3.resource('s3')
     content_object = s3.Object(bucket_name=bucket_api_auth, key=key_api_auth)
     file_content = content_object.get()['Body'].read().decode('utf-8')
