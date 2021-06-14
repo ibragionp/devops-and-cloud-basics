@@ -13,10 +13,7 @@ import twitter_analysis
 
 path = os.path.dirname(os.path.realpath(__file__))
 output_path = '/output'
-#sync_aws_str = 'aws s3 sync /var/lib/jenkins/workspace/python-script-pipeline-jenkinsfile/tema06/ s3://jt-dataeng-isabellabragionpereira/tema09/output/'
-#sync_aws_str = 'sudo -S su - ec2-user -c "aws s3 sync {path}{output_path} s3://jt-dataeng-isabellabragionpereira/tema09/output/ "'.format(
-#        path = path, 
-#        output_path = output_path) 
+
 sync_aws_str = 'aws s3 sync {path}{output_path} s3://jt-dataeng-isabellabragionpereira/tema09/output/'.format(
         path = path, 
         output_path = output_path) 
