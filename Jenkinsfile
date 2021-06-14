@@ -48,7 +48,7 @@ pipeline {
 
                 sh 'sudo cp -r /var/lib/jenkins/workspace/python-script-pipeline-jenkinsfile/tema06/output/ /home/ec2-user/devops-and-cloud-basics/tema09/output/'
                 
-                sh 'aws s3 sync /home/ec2-user/devops-and-cloud-basics/tema09/output/ s3://jt-dataeng-isabellabragionpereira/tema09/output/'
+                sh 'sudo -S su - ec2-user -c "aws s3 sync /home/ec2-user/devops-and-cloud-basics/tema09/output/ s3://jt-dataeng-isabellabragionpereira/tema09/output/ "'
                
             }
 
