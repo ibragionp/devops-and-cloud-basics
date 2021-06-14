@@ -14,7 +14,6 @@ pipeline {
 
                 
                 sh 'sudo pip3 install datetime'
-                sh 'sudo pip3 install subprocess'
                 sh 'sudo pip3 install pandas'
                 sh 'sudo pip3 install tweepy'
                 
