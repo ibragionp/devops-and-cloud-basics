@@ -46,7 +46,7 @@ pipeline {
                 
                sh '''
                 cd /var/lib/jenkins/workspace/python-script-pipeline-jenkinsfile/tema06/
-                python3 analysis_test.py
+                python3 main_test.py
                 '''
 
             }
