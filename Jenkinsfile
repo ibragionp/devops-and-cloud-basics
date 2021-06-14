@@ -15,7 +15,6 @@ pipeline {
                 
                 sh 'sudo pip3 install datetime'
                 sh 'sudo pip3 install pandas'
-                sh 'sudo pip3 install smart_open[s3]'
                 sh 'sudo pip3 install tweepy'
                 
                 sh 'sudo mkdir -p -m777 /home/ec2-user/devops-and-cloud-basics/tema09/output'
