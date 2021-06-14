@@ -29,10 +29,10 @@ path = os.path.dirname(os.path.realpath(__file__))
 def api_connection():
     print(f'Connecting to Twitter API...')
     
-    s3_client = boto3.client(service_name='s3')
-    result = s3_client.get_object(Bucket = bucket_api_auth, 
-                                  Key = key_api_auth) 
-    lines = result["Body"].read().splitlines()
+    s3 = boto3.resource('s3')
+    content_object = s3.Object(bucket_name=bucket_api_auth, key=key_api_auth)
+    file_content = content_object.get()['Body'].read().decode('utf-8')
+    lines = file_content.split('\n')
     consumer_key = lines[0].strip()
     consumer_secret = lines[1].strip()
     access_token = lines[2].strip()
