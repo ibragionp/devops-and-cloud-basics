@@ -5,7 +5,7 @@ Created on Fri May  7 17:05:37 2021
 
 @author: ilegra
 """
-'''
+
 import os
 from tweepy import OAuthHandler, API, Cursor
 from pandas import read_csv, DataFrame, concat
@@ -118,4 +118,3 @@ def main():
 start_time = time.time()
 main()
 print('Execution time in seconds: ' + str(time.time() - start_time))
-'''
