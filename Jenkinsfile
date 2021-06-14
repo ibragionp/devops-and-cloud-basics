@@ -1,3 +1,9 @@
+node {
+  withCredentials( [usernamePassword( credentialsId: 'amazon', 
+                                      usernameVariable: 'USERNAME', 
+                                      passwordVariable: 'PASSWORD')])
+}
+
 pipeline {
 
     agent any
@@ -26,9 +32,6 @@ pipeline {
         stage('Build') {
 
             steps {
-                withCredentials( [usernamePassword( credentialsId: 'amazon', 
-                                      usernameVariable: 'USERNAME', 
-                                      passwordVariable: 'PASSWORD')])
                 
                sh '''
                 cd /var/lib/jenkins/workspace/python-script-pipeline-jenkinsfile/tema06/
