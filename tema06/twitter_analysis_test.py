@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jun 10 14:36:22 2021
+Created on Thu Jun 10 10:53:32 2021
 
 @author: ilegra
 """
-
 import os
 
 output_path = '/output'
-top_actors_tweets_file = '/top_actors_file.csv'
+top_actors_tweets_file = '/top_actors_tweets_file.csv'
 
 files_path = os.path.dirname(os.path.realpath(__file__)) + output_path + top_actors_tweets_file
 

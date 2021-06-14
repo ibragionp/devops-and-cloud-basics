@@ -5,18 +5,18 @@ Created on Fri May  7 17:05:37 2021
 
 @author: ilegra
 """
-
+from smart_open import smart_open
 import os
 from tweepy import OAuthHandler, API, Cursor
 from pandas import read_csv, DataFrame, concat
-from smart_open import smart_open
 import time
 
+bucket_path_api_auth = 's3://jt-dataeng-isabellabragionpereira/tema09/api_authentication'
 api_auth_file = '/api_authentication.txt'
 top_actors_file = '/top_actors_file.csv' 
 top_actors_tweets_file = '/top_actors_tweets_file.csv'
-auth_path = '/authentications'
 output_path = '/output'
+api_auth_file = '/api_authentication.txt'
 
 name_col = 'Name'
 actor_actress_col = 'Actor/actress name'
@@ -28,21 +28,20 @@ path = os.path.dirname(os.path.realpath(__file__))
 
 def api_connection():
     print(f'Connecting to Twitter API...')
-    with smart_open('s3://jt-dataeng-isabellabragionpereira/tema09/api_authentication/api_authentication.txt', 'rb') as s3_source:
+    
+    with smart_open(bucket_path_api_auth + api_auth_file, 'rb') as s3_source:
         lines = s3_source.readlines()
-    #file = open (path + auth_path + api_auth_file, 'r')
-    #lines = file.readlines()
     consumer_key = lines[0].strip()
     consumer_secret = lines[1].strip()
     access_token = lines[2].strip()
     access_token_secret = lines[3].strip()
-    #file.close()
     auth = OAuthHandler(consumer_key,
                         consumer_secret)
     auth.set_access_token(access_token, 
                           access_token_secret)
     api = API(auth, 
                  wait_on_rate_limit = True)
+    
     print(f'API was connected.')
     return api
 
