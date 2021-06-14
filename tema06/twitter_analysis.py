@@ -29,6 +29,7 @@ from boto3 import Session
 
 session = Session()
 credentials = session.get_credentials()
+print(credentials)
 # Credentials are refreshable, so accessing your access key / secret key
 # separately can lead to a race condition. Use this to get an actual matched
 # set.
