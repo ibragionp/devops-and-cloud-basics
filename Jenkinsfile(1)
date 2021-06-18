@@ -36,7 +36,7 @@ pipeline {
                 '''
                
                sh '''
-                docker run -it testing main.py
+                docker run testing main.py
                 '''
 
             }
