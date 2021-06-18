@@ -3,7 +3,7 @@ pipeline {
     agent any
   
     environment { 
-        YOUR_CRED = credentials('amazon') 
+        YOUR_CRED = credentials('Amazon') 
     }
 
     stages {
