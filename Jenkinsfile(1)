@@ -10,8 +10,8 @@ pipeline {
     
         stage('Run') {
             steps {
-                sh "echo $USER_CREDENTIALS_USR"
-                sh "echo $USER_CREDENTIALS_PSW"
+                sh 'echo $USER_CREDENTIALS_USR'
+                sh 'echo $USER_CREDENTIALS_PSW'
             }
         }
     
