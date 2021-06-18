@@ -11,8 +11,8 @@ pipeline {
     
         stage('lalala') {
             steps {
-                sh 'echo $AWS_ACCESS_KEY'
-                sh 'echo $AWS_SECRET_KEY'
+                sh 'echo "$AWS_ACCESS_KEY"'
+                sh 'echo "$AWS_SECRET_KEY"'
             }
         }
          
