@@ -2,10 +2,6 @@ pipeline {
 
     agent any
   
-    environment {
-        YOUR_CRED = credentials('Amazon')
-    }
-        
     stages {
     
         stage('Prepare enviroment') {
@@ -33,7 +29,7 @@ pipeline {
                 script {
                         withCredentials([[
                             class: 'AmazonWebServicesCredentialsBinding',
-                            credentialsId: awsCredentialId,
+                            credentialsId: 'Amazon',
                             accessKeyVariable: 'AWS_ACCESS_KEY',
                             secretKeyVariable: 'AWS_SECRET_KEY'
                         ]]) {
