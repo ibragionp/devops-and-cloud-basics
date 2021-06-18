@@ -1,0 +1,62 @@
+pipeline {
+
+    agent any
+  
+    environment { 
+        YOUR_CRED = credentials('amazon') 
+    }
+
+    stages {
+         
+        stage('Prepare enviroment') {
+               
+            steps {
+                sh'''
+                sudo apt-get install docker -y
+                sudo service docker start
+                '''
+                
+                sh'''
+                sudo chmod 777 /var/run/docker.sock
+                '''
+                
+                sh 'sudo systemctl start docker'
+            }
+        }
+
+
+        stage('Build') {
+
+            steps {
+                
+               sh '''
+                docker build -t testing .
+                '''
+               
+               sh '''
+                docker run -it testing main.py
+                '''
+
+            }
+
+        }
+        
+        stage('Test') {
+
+            steps {
+                
+               sh '''
+                docker run -it testing main_test.py
+
+                '''
+
+            }
+
+        }
+
+
+
+
+    }
+
+}
