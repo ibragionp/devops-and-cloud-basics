@@ -3,11 +3,17 @@ pipeline {
     agent any
   
     environment {
-    AWS_ACCESS_KEY_ID     = credentials('Amazon')
-    AWS_SECRET_ACCESS_KEY = credentials('Amazon')
+        YOUR_CRED = credentials('Amazon')
     }
-
+        
     stages {
+    
+        stage('lalala') {
+            steps {
+                sh "echo $YOUR_CRED_USR"
+                sh "echo $YOUR_CRED_PSW"
+            }
+        }
          
         stage('Prepare enviroment') {
                
