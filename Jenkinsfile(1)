@@ -10,8 +10,8 @@ pipeline {
     
         stage('lalala') {
             steps {
-                sh "echo $YOUR_CRED_USR"
-                sh "echo $YOUR_CRED_PSW"
+                sh 'echo $YOUR_CRED_USR'
+                sh 'echo $YOUR_CRED_PSW'
             }
         }
          
