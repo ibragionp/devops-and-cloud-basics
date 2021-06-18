@@ -50,7 +50,7 @@ pipeline {
             steps {
                 
                sh '''
-                docker run -it testing main_test.py
+                docker run testing main_test.py
 
                 '''
 
