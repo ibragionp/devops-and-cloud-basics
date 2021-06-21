@@ -7,10 +7,7 @@ ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 RUN mkdir /tema10
 WORKDIR /tema10
-RUN pip install datetime
-RUN pip install pandas
-RUN pip install boto3
-RUN pip install tweepy
+RUN pip install requirements.txt
 COPY /tema06 /tema10/
 CMD ["main.py"]
 ENTRYPOINT ["python3"]
