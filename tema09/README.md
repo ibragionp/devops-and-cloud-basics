@@ -225,9 +225,9 @@ No repositório há um arquivo chamado Jenkinsfile, é onde está configurado to
 6. Em general marcar GitHub project 
 7. Em project url, colocar a URL do repositório sem "tree/master" 
 8. Em build triggers marcar GitHub hook trigger for GITScm polling
-9. Em pipeline, definition selecionar pipeline SCM
+9. Em pipeline, definition selecionar pipeline script
 10. Preencher repository URL com a url .git do projeto 
-11. Indicar "Jenkinsfile"
+11. Escrever ou colar o conteúdo da pipeline 
 12. Aplicar 
 13. Salvar
 
@@ -235,15 +235,15 @@ No repositório há um arquivo chamado Jenkinsfile, é onde está configurado to
 A pipeline irá fazer toda a preparação do ambiente e execução do script python de análise de dados do twitter e as saídas serão salvas na pasta "home/ec2-user/devops-and-cloud-basics/tema09/output/" dentro da EC2.
 
 A pipeline está com o seguinte passo-a-passo:
-1. Declarative: Checkout SCM - Irá fazer o checkout do repositório para branch master e irá clonar o repositório
-2. Enviroment - Irá indicar que as credenciais do Jenkins que iremos usar é a criada anteriormente "Amazon"
+1. Checkout - Irá fazer o checkout do repositório para branch master
+2. Clone - Irá clonar o repositório
 3. Prepare enviroment - Irá preparar a EC2 para execução do script python:
-	1. Instalar o docker
-	2. Dar permissões ao docker
-4. Build - Irá subir uma imagem docker com as configurações do nosso Dockerfile, que nada mais é do que uma imagem python para executar nossos scripts e como argumento do build da imagem, irá as variáveis de ambiente do Jenkins com as credenciais do "Amazon" criadas anteriormente e definida como ambiente na pipeline:
-	1. Build da imagem
-	2. Rodar o script python main.py
-5. Test - Irá rodar o script de main_test.py da nossa imagem.
+	1. Instalação do python 3
+	2. Instalação do pip 3
+	3. Instalação das bibliotecas necessárias (datetime, mysql-connector-python, pandas e tweepy)
+	4. Criação da pasta onde será feito o deploy do projeto, ou seja, ficarão as saídas do script python.
+4. Build - Irá navegar até a pasta do tema06 e executar o script python
+5. Deploy - Irá excluir qualquer coisa que esteja na pasta onde será feito o deploy, criada anteriormente, caso tenha algo referente a um build anterior. E irá copiar os arquivos de build gerados, após a execução do script python, do workspace do jenkins para a nossa pasta criada. Assim qualquer atualização no repositório, será atualizado também na EC2.
 
 
 
