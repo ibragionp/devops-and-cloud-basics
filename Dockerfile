@@ -5,7 +5,7 @@ ARG AWS_DEFAULT_REGION=sa-east-1
 RUN pip install awscli
 ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-WORKDIR /tema10
+WORKDIR /tema10/
 RUN pip install -r requirements.txt
 COPY /tema06 /tema10/
 CMD ["main.py"]
