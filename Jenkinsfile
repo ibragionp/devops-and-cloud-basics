@@ -1,28 +1,28 @@
 pipeline {
 
     agent any
-  
-    environment { 
-        YOUR_CRED = credentials('amazon') 
+    
+    environment {
+        USER_CREDENTIALS = credentials('Amazon')
     }
 
     stages {
-         
+    
         stage('Prepare enviroment') {
                
             steps {
-                sh 'sudo yum update -y'
-
-                sh 'sudo yum install -y python3'
-                sh 'sudo yum install python3-pip -y'
-
+                sh'''
+                sudo yum update -y
+                sudo amazon-linux-extras install docker
+                sudo yum install docker
+                sudo service docker start
+                sudo usermod -a -G docker ec2-user
+                '''
                 
-                sh 'sudo pip3 install datetime'
-                sh 'sudo pip3 install pandas'
-                sh 'sudo pip3 install boto3'
-                sh 'sudo pip3 install tweepy'
-                
-                sh 'sudo mkdir -p -m777 /home/ec2-user/devops-and-cloud-basics/tema09/output'
+                sh'''
+                sudo chmod 777 /var/run/docker.sock
+                '''
+               
             }
         }
 
@@ -30,12 +30,10 @@ pipeline {
         stage('Build') {
 
             steps {
-                
-               sh '''
-                cd /var/lib/jenkins/workspace/python-script-pipeline-jenkinsfile/tema06/
-                python3 main.py
-                '''
-
+                sh '''
+                    docker build -t testing --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY .
+                    docker run testing main.py
+                    '''
             }
 
         }
@@ -45,8 +43,7 @@ pipeline {
             steps {
                 
                sh '''
-                cd /var/lib/jenkins/workspace/python-script-pipeline-jenkinsfile/tema06/
-                python3 main_test.py
+                docker run testing main_test.py
                 '''
 
             }
@@ -54,17 +51,6 @@ pipeline {
         }
 
 
-        stage('Deploy') {
-
-            steps {
-
-                sh 'sudo rm -rf /home/ec2-user/devops-and-cloud-basics/tema09/output/'
-
-                sh 'sudo cp -r /var/lib/jenkins/workspace/python-script-pipeline-jenkinsfile/tema06/output/ /home/ec2-user/devops-and-cloud-basics/tema09/output/'
-              
-            }
-
-        }
 
     }
 
