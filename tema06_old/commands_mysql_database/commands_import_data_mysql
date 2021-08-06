@@ -1,0 +1,26 @@
+split -C 1024m -d title_principals.tsv title_principals_part_* 
+
+mysqlimport --local \
+    --compress \
+    --user=root \
+    --password \
+    --host=localhost \
+    --fields-terminated-by='\t' imdb title.basics.tsv
+    --ignore-lines=1
+    
+mysqlimport --local \
+    --compress \
+    --user=root \
+    --password \
+    --host=localhost \
+    --fields-terminated-by='\t' imdb title_principals_part_*
+    --ignore-lines=1
+    
+mysqlimport --local \
+    --compress \
+    --user=root \
+    --password \
+    --host=localhost \
+    --fields-terminated-by='\t' imdb name.basics.tsv
+    --ignore-lines=1
+
